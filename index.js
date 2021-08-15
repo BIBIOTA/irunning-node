@@ -71,7 +71,7 @@ const events = function () {
           eventName = table_td.eq(1).find('a').text().trim();
           link = table_td.eq(1).find('a').attr('href');
         } else {
-          eventName = table_td.eq(1).text();
+          eventName = table_td.eq(1).text().trim();
           link = null;
         }
         console.log(link);
@@ -160,7 +160,7 @@ const events = function () {
     fs.writeFileSync("result.json", JSON.stringify(result));
   });
 };
-
+events();
 /* 排成每24小時更新一次資料 */
 var dayInMilliseconds = 1000 * 60 * 60 * 24;
 setInterval(()=> { events(); },dayInMilliseconds );
