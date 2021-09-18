@@ -172,12 +172,20 @@ app.get('/api/events', (request, response) => {
       if(fs.existsSync(path)) {
 
         const json = JSON.parse(fs.readFileSync(path, 'utf-8'))
-  
-        response.json({
-          status: true,
-          message: '資料取得成功',
-          ...json
-        });
+
+        if (json.length > 0) {
+          response.json({
+            status: true,
+            message: '資料取得成功',
+            ...json
+          });
+        } else {
+          response.status(404).send({
+            status: false,
+            message: '無法取得更新資料',
+            data: null,
+          });
+        }
 
       } else {
         response.status(404).send({
