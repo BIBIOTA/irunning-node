@@ -166,7 +166,7 @@ var dayInMilliseconds = 1000 * 60 * 60 * 24;
 setInterval(()=> { events(); },dayInMilliseconds );
 
 /* 取得賽事資訊api */
-app.get('/api/events', (request, response) => {
+app.get('/', (request, response) => {
     try {
       const path = './result.json';
       if(fs.existsSync(path)) {
