@@ -17,3 +17,10 @@
 <br />
 3.透過Node.js爬蟲，取得全國路跑賽事資訊並建立資料庫、搜尋功能
 <br />
+全國馬拉松賽事資料來源:
+<br />
+跑者廣場-全國賽會
+<br />
+<a href="http://www.taipeimarathon.org.tw/contest.aspx
+">http://www.taipeimarathon.org.tw/contest.aspx</a>
+<br />
