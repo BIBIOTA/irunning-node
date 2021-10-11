@@ -161,39 +161,42 @@ const events = function () {
   });
 };
 events();
-/* 排成每24小時更新一次資料 */
-var dayInMilliseconds = 1000 * 60 * 60 * 24;
-setInterval(()=> { events(); },dayInMilliseconds );
 
 /* 取得賽事資訊api */
 app.get('/', (request, response) => {
     try {
-      const path = './result.json';
-      if(fs.existsSync(path)) {
 
-        const json = JSON.parse(fs.readFileSync(path, 'utf-8'))
+      const getEvent = Promise.resolve(events());
 
-        if (json.length > 0) {
-          response.json({
-            status: true,
-            message: '資料取得成功',
-            ...json
-          });
+      getEvent.finally(() => {
+        const path = './result.json';
+        if(fs.existsSync(path)) {
+  
+          const json = JSON.parse(fs.readFileSync(path, 'utf-8'))
+  
+          if (json.length > 0) {
+            response.json({
+              status: true,
+              message: '資料取得成功',
+              ...json
+            });
+          } else {
+            response.status(404).send({
+              status: false,
+              message: '無法取得更新資料',
+              data: null,
+            });
+          }
+  
         } else {
           response.status(404).send({
             status: false,
-            message: '無法取得更新資料',
+            message: '查無資料',
             data: null,
           });
         }
+      });
 
-      } else {
-        response.status(404).send({
-          status: false,
-          message: '查無資料',
-          data: null,
-        });
-      }
     } catch (err) {
       console.log(err);
       response.status(500).send({
