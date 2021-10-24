@@ -8,12 +8,7 @@ import express from 'express';
 import moment from 'moment';
 import * as d3 from 'd3';
 const app = express();
-app.configure(function () {
-app.use(express.bodyParser());
-app.use(express.cookieParser());
-app.use(express.static(__dirname));
-app.use(app.router); //Express implicitly appends router middleware!
-});
+app.use(express.static(process.cwd()));
 import * as http from 'http';
 const server = http.createServer(app);
 
@@ -167,7 +162,6 @@ const events = function () {
     fs.writeFileSync(process.cwd() + '/result.json', JSON.stringify(result));
   });
 };
-events();
 
 /* 經緯度位置對應的鄉鎮區json */
 const TwGeoJsonPath = process.cwd() + '/twGeoJson.json';
