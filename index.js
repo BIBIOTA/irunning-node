@@ -8,7 +8,7 @@ import express from 'express';
 import moment from 'moment';
 import * as d3 from 'd3';
 const app = express();
-app.use(express.static(process.cwd()+process.env.APP_NAME));
+app.use(express.static(process.cwd()));
 import * as http from 'http';
 const server = http.createServer(app);
 
