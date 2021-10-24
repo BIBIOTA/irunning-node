@@ -222,7 +222,7 @@ app.get('/api/district', cors(corsOptions),(request, response) => {
 });
 
 /* 取得賽事資訊api */
-app.get('/api/events', (request, response) => {
+app.get('/api/events', cors(corsOptions),(request, response) => {
   try {
 
     const getEvent = Promise.resolve(events());
