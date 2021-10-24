@@ -8,6 +8,7 @@ import express from 'express';
 import moment from 'moment';
 import * as d3 from 'd3';
 const app = express();
+app.use(express.static(process.cwd()));
 import * as http from 'http';
 const server = http.createServer(app);
 
@@ -158,13 +159,13 @@ const events = function () {
     // 在終端機(console)列出結果
     console.log(result);
     // 寫入 result.json 檔案
-    fs.writeFileSync("result.json", JSON.stringify(result));
+    fs.writeFileSync(process.cwd() + '/result.json', JSON.stringify(result));
   });
 };
 events();
 
 /* 經緯度位置對應的鄉鎮區json */
-const TwGeoJsonPath = './twGeoJson.json';
+const TwGeoJsonPath = process.cwd() + '/twGeoJson.json';
 const TwGeoJson = JSON.parse(fs.readFileSync(TwGeoJsonPath, 'utf-8'))
 
 /* 取得經緯度位置對應的鄉鎮區api */
@@ -218,7 +219,7 @@ app.get('/api/events', (request, response) => {
     const getEvent = Promise.resolve(events());
 
     getEvent.finally(() => {
-      const path = './result.json';
+      const path = process.cwd() + '/result.json';
       if(fs.existsSync(path)) {
 
         const json = JSON.parse(fs.readFileSync(path, 'utf-8'))
@@ -254,6 +255,12 @@ app.get('/api/events', (request, response) => {
       data: null,
     });
   }
+});
+
+app.get('/*', (request, response) => {
+  response.json({
+    message: 'Hello Woard',
+  });
 });
 
 server.listen(process.env.PORT, () => console.log('start!'));
