@@ -8,7 +8,12 @@ import express from 'express';
 import moment from 'moment';
 import * as d3 from 'd3';
 const app = express();
-app.use(express.static(process.cwd()));
+app.configure(function () {
+app.use(express.bodyParser());
+app.use(express.cookieParser());
+app.use(express.static(__dirname));
+app.use(app.router); //Express implicitly appends router middleware!
+});
 import * as http from 'http';
 const server = http.createServer(app);
 
