@@ -10,16 +10,17 @@ import * as d3 from 'd3';
 const app = express();
 app.use(express.static(process.cwd()));
 import cors from 'cors';
-app.use(cors({
+import * as http from 'http';
+const server = http.createServer(app);
+
+const corsOptions = {
   origin: [
     'http://localhost:8070',
     'http://localhost:80',
     'https://irunning-api.bibiota.com',
     'https://irunning.bibiota.com',
   ],
-}))
-import * as http from 'http';
-const server = http.createServer(app);
+};
 
 /* 月份中文陣列 */
 const monthArr = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月', ]
@@ -177,7 +178,7 @@ const TwGeoJsonPath = process.cwd() + '/twGeoJson.json';
 const TwGeoJson = JSON.parse(fs.readFileSync(TwGeoJsonPath, 'utf-8'))
 
 /* 取得經緯度位置對應的鄉鎮區api */
-app.get('/api/district', (request, response) => {
+app.get('/api/district', cors(corsOptions),(request, response) => {
     try {
 
       if (request.query.lng && request.query.lat) {
