@@ -6,6 +6,7 @@ import cheerio from 'cheerio';
 import fs from 'fs';
 import express from 'express';
 import moment from 'moment';
+import * as d3 from 'd3';
 const app = express();
 import * as http from 'http';
 const server = http.createServer(app);
@@ -162,40 +163,43 @@ const events = function () {
 };
 events();
 
-/* 取得賽事資訊api */
-app.get('/', (request, response) => {
+/* 經緯度位置對應的鄉鎮區json */
+const TwGeoJsonPath = './twGeoJson.json';
+const TwGeoJson = JSON.parse(fs.readFileSync(TwGeoJsonPath, 'utf-8'))
+
+/* 取得經緯度位置對應的鄉鎮區api */
+app.get('/api/district', (request, response) => {
     try {
 
-      const getEvent = Promise.resolve(events());
+      if (request.query.lng && request.query.lat) {
+        console.log(request.query);
+        const point = [request.query.lng, request.query.lat];
 
-      getEvent.finally(() => {
-        const path = './result.json';
-        if(fs.existsSync(path)) {
-  
-          const json = JSON.parse(fs.readFileSync(path, 'utf-8'))
-  
-          if (json.length > 0) {
-            response.json({
-              status: true,
-              message: '資料取得成功',
-              ...json
-            });
-          } else {
-            response.status(404).send({
-              status: false,
-              message: '無法取得更新資料',
-              data: null,
-            });
-          }
-  
+        const geoOut = TwGeoJson.features.filter((d) => {return d3.geoContains(d, point)});
+
+        if (geoOut.length === 1) {
+          const [geo] = geoOut;
+          const { C_Name, T_Name } = geo.properties;
+          response.json({
+            status: true,
+            message: '資料取得成功',
+            data: {C_Name, T_Name},
+          });
         } else {
           response.status(404).send({
             status: false,
-            message: '查無資料',
+            message: '無法取得鄉鎮區資料',
             data: null,
           });
         }
-      });
+
+      } else {
+        response.status(404).send({
+          status: false,
+          message: '缺少經緯度參數',
+          data: null,
+        });
+      }
 
     } catch (err) {
       console.log(err);
@@ -205,6 +209,51 @@ app.get('/', (request, response) => {
         data: null,
       });
     }
+});
+
+/* 取得賽事資訊api */
+app.get('/api/events', (request, response) => {
+  try {
+
+    const getEvent = Promise.resolve(events());
+
+    getEvent.finally(() => {
+      const path = './result.json';
+      if(fs.existsSync(path)) {
+
+        const json = JSON.parse(fs.readFileSync(path, 'utf-8'))
+
+        if (json.length > 0) {
+          response.json({
+            status: true,
+            message: '資料取得成功',
+            ...json
+          });
+        } else {
+          response.status(404).send({
+            status: false,
+            message: '無法取得更新資料',
+            data: null,
+          });
+        }
+
+      } else {
+        response.status(404).send({
+          status: false,
+          message: '查無資料',
+          data: null,
+        });
+      }
+    });
+
+  } catch (err) {
+    console.log(err);
+    response.status(500).send({
+      status: false,
+      message: '無法取得資料',
+      data: null,
+    });
+  }
 });
 
 server.listen(process.env.PORT, () => console.log('start!'));
