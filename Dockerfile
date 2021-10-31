@@ -8,7 +8,6 @@ RUN echo "PORT=8060" >> /app/.env
 RUN echo "APP_NAME=irunning-node" >> /app/.env
 
 COPY package.json ./
-RUN npm install && npm cache clean
 COPY . .
 CMD [ "node" ]
 
