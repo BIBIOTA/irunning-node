@@ -14,7 +14,7 @@ CMD [ "node" ]
 
 FROM node:14-alpine
 WORKDIR /app
-RUN apk update \
+RUN apk update
 RUN chown -R node:node /app
 USER node
 CMD [ "node", "index.js" ]
