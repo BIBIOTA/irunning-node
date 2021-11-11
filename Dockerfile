@@ -3,9 +3,7 @@ WORKDIR /app
 
 RUN apk update \
     && apk add bash \
-    && apk add --update python make g++ \
     && npm install -g npm \
-    && npm install -g @vue/cli \
     && npm install -g nodemon
 RUN echo "PORT=8060" >> /app/.env
 RUN echo "APP_NAME=irunning-node" >> /app/.env
