@@ -1,7 +1,7 @@
 FROM node:14-alpine as publish
 WORKDIR /app
 RUN apk update \
-    && apk add --update python make g++ \
+    && apk add npm python g++ make \
     && npm install -g npm \
     && npm install -g pm2
 RUN npm install
