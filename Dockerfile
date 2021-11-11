@@ -5,12 +5,12 @@ RUN apk update \
 RUN echo "PORT=8060" >> /app/.env
 RUN echo "APP_NAME=irunning-node" >> /app/.env
 
-COPY package.json /all
-COPY . app
-CMD [ "node" ]
+COPY package.json ./
+COPY . .
 
 WORKDIR /app
 RUN npm install
 RUN chown -R node:node /app
-EXPOSE 8060
+EXPOSE 8080
 CMD [ "node", "index.js" ]
+
