@@ -8,8 +8,8 @@ RUN apk update \
 RUN echo "PORT=8060" >> /app/.env
 RUN echo "APP_NAME=irunning-node" >> /app/.env
 
-COPY package.json ./
-COPY . .
+COPY package.json /all
+COPY . app
 CMD [ "node" ]
 
 FROM node:14-alpine
