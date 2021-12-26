@@ -30,7 +30,7 @@ client-website: Google Kubernetes Engine (GKE)
 <br />
 node.js: Google Kubernetes Engine (GKE)
 <br />
-server-api: Google Compute Engine (GCE)
+server-api: AWS (EC2)
 <br />
 <br />
 
