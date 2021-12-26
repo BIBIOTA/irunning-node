@@ -5,7 +5,12 @@ stages:
 Deploy:
   stage: deploy
   image: "docker:18.09"
+  services:
+    - docker:18-dind
   before_script:
+    - apk -Uuv add curl bash python
+    - curl https://sdk.cloud.google.com | CLOUDSDK_CORE_DISABLE_PROMPTS=1 bash
+    - export PATH=$PATH:/root/google-cloud-sdk/bin/
     - echo "$GCP_SERVICE_KEY" > gcloud-service-key.json # Google Cloud service accounts
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
   script:
