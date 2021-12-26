@@ -4,7 +4,7 @@ stages:
   - deploy-k8s
 Deploy:
   stage: deploy
-  image: google/cloud-sdk
+  image: "docker:18.09"
   before_script:
     - echo "$GCP_SERVICE_KEY" > gcloud-service-key.json # Google Cloud service accounts
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
