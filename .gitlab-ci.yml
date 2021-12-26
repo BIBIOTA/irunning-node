@@ -9,7 +9,8 @@ Deploy:
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
   script:
     - gcloud config set project $GCP_PROJECT_ID
-    - gcloud builds submit --tag asia.gcr.io/$GCP_PROJECT_ID/irunning-node
+    - gcloud builds submit --tag asia.gcr.io/$GCP_PROJECT_ID/$IMAGE:$BUILD_ID
+    - kubectl set image deployment $DEPLOYMENT $CONTAINER=gcr.io/i$GCP_PROJECT_ID/$IMAGE:$BUILD_ID
   only:
     - master
 
