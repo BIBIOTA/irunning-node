@@ -115,10 +115,4 @@ app.get('/api/events', cors(corsOptions),(request, response) => {
   }
 });
 
-app.get('', (request, response) => {
-  response.json({
-    message: 'Hello Woard',
-  });
-});
-
 server.listen(process.env.PORT, () => console.log('start!'));
