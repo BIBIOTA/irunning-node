@@ -14,6 +14,7 @@ Deploy:
     - echo "$GCP_SERVICE_KEY" > gcloud-service-key.json # Google Cloud service accounts
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
   script:
+    - gcloud config set project $GCP_PROJECT_ID
     - docker build -t gcr.io/$GCP_PROJECT_ID/$IMAGE:$CI_PIPELINE_ID .
     - docker push gcr.io/$GCP_PROJECT_ID/$IMAGE:$CI_PIPELINE_ID
   only:
