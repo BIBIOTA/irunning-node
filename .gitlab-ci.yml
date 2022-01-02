@@ -1,7 +1,46 @@
 image: docker:latest
 stages:
+  - lint
+  - dependencies_install
+  - test
   - deploy
   - deploy-k8s
+
+lint:
+  stage: lint
+  image: node:latest
+  script:
+    - npm install -g eslint
+    - npm run lint
+
+dependencies_install:
+  stage: dependencies_install
+  image: node:latest
+  script:
+    - if [[ ! -d node_modules ]] || [[ -n `git diff --name-only HEAD~1 HEAD | grep "\package.json\b"` ]];
+      then
+      npm install;
+      fi
+  cache:
+    key:
+      files:
+        - package.json
+    paths:
+    - node_modules/
+
+test:
+  stage: test
+  image: node:16.13.1
+  cache:
+    key:
+      files:
+        - package.json
+    paths:
+      - node_modules/
+    policy: pull
+  script:
+    - npm run test
+
 Deploy:
   stage: deploy
   image: "docker:18.09"
