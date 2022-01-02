@@ -1,7 +1,8 @@
 {
   "scripts": {
+    "lint": "eslint *.js",
     "test": "mocha test/**/*.js"
-  }, 
+  },
   "dependencies": {
     "cheerio": "^1.0.0-rc.10",
     "cors": "^2.8.5",
@@ -18,6 +19,7 @@
   "type": "module",
   "devDependencies": {
     "chai": "^4.3.4",
+    "eslint": "^8.6.0",
     "mocha": "^9.1.3"
   }
 }
