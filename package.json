@@ -13,7 +13,7 @@
     "fs": "^0.0.1-security",
     "http": "^0.0.1-security",
     "moment": "^2.29.1",
-    "nodemon": "^2.0.12",
+    "redis": "^3.1.2",
     "request": "^2.88.2"
   },
   "type": "module",
