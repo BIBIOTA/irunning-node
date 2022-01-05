@@ -101,15 +101,14 @@ app.get('/api/events', cors(corsOptions),async(request, response) => {
         const data = await events;
 
         if(data) {
-
           if (data.length > 0) {
+            client.set("events", JSON.stringify(data), redis.print);
+            client.expire("events", 12*60*60);
             response.json({
               status: true,
               message: '資料取得成功',
               data,
             });
-            client.set("events", JSON.stringify(data), redis.print);
-            client.expire("events", 12*60*60);
           } else {
             response.status(404).send({
               status: false,
@@ -117,7 +116,6 @@ app.get('/api/events', cors(corsOptions),async(request, response) => {
               data: null,
             });
           }
-
         } else {
           response.status(404).send({
             status: false,
