@@ -4,6 +4,7 @@ RUN apk update \
     && npm install -g npm
 RUN echo "PORT=80" >> /app/.env
 RUN echo "APP_NAME=irunning-node" >> /app/.env
+RUN echo "REDIS_HOST='redis'" >> /app/.env
 
 COPY package.json ./
 COPY . .

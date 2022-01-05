@@ -9,7 +9,10 @@ app.use(express.static(process.cwd()));
 import cors from 'cors';
 import * as http from 'http';
 import redis from 'redis';
-const client = redis.createClient();
+const client = redis.createClient({
+  port      : 6379,
+  host      : process.env.REDIS_HOST
+});
 const server = http.createServer(app);
 
 // connect redis server
