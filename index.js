@@ -8,7 +8,14 @@ const app = express();
 app.use(express.static(process.cwd()));
 import cors from 'cors';
 import * as http from 'http';
+import redis from 'redis';
+const client = redis.createClient();
 const server = http.createServer(app);
+
+// connect redis server
+client.on("error", function(error) {
+  console.error(error);
+});
 
 /* libs */
 import { events } from './lib/events.js';
@@ -72,37 +79,48 @@ app.get('/api/district', cors(corsOptions),(request, response) => {
 });
 
 /* 取得賽事資訊api */
-app.get('/api/events', cors(corsOptions),(request, response) => {
+app.get('/api/events', cors(corsOptions),async(request, response) => {
   try {
 
-    const getEvent = events();
+    client.get("events", async (err, redisData) => {
+      // err handle
+      if (err) {
+        console.log(err)
+      }
+      // check redis has value
+      if (redisData) {
+        response.json({
+          status: true,
+          message: '資料取得成功',
+          data: JSON.parse(redisData),
+        });
+      } else {
+        const data = await events;
 
-    getEvent.finally(() => {
-      const path = process.cwd() + '/result.json';
-      if(fs.existsSync(path)) {
+        if(data) {
 
-        const json = JSON.parse(fs.readFileSync(path, 'utf-8'))
+          if (data.length > 0) {
+            response.json({
+              status: true,
+              message: '資料取得成功',
+              data,
+            });
+            client.set("events", JSON.stringify(data), redis.print);
+          } else {
+            response.status(404).send({
+              status: false,
+              message: '無法取得更新資料',
+              data: null,
+            });
+          }
 
-        if (json.length > 0) {
-          response.json({
-            status: true,
-            message: '資料取得成功',
-            ...json
-          });
         } else {
           response.status(404).send({
             status: false,
-            message: '無法取得更新資料',
+            message: '查無資料',
             data: null,
           });
         }
-
-      } else {
-        response.status(404).send({
-          status: false,
-          message: '查無資料',
-          data: null,
-        });
       }
     });
 
