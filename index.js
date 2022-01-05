@@ -109,6 +109,7 @@ app.get('/api/events', cors(corsOptions),async(request, response) => {
               data,
             });
             client.set("events", JSON.stringify(data), redis.print);
+            client.expire("events", 12*60*60);
           } else {
             response.status(404).send({
               status: false,
