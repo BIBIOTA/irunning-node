@@ -1,55 +1,37 @@
 /* https://www.npmjs.com/package/chai */
 import chai from 'chai';
-import supertest from 'supertest';
-const api = supertest('http://localhost:8050/api'); // API
+import { district } from '../lib/district.js';
 
 var assert = chai.assert;
 var expect = chai.expect;
 
 describe('#district', () => {
-  it('should return api structrue', (done) => {
+  it('should return api structrue', () => {
 
     /* success */
 
-    api.get('/district')
-      .query({
-        lng: 121.503599,
-        lat: 25.1353734,
-      })
-      .expect(200)
-      .expect('Content-Type', /application\/json/)
-      .end(function(err, res) {
-        if (err) return done(err);
-        const responseData = JSON.parse(res.text);
-        const { status, message, data } = responseData;
-        expect(status).to.equal(true);
-        expect(message).to.equal('資料取得成功');
-        expect(data).to.have.all.keys('C_Name', 'T_Name');
+    const result = district(121.503599, 25.1353734);
 
-        assert.isString(data.C_Name, 'C_Name are not string');
-        assert.isString(data.T_Name, 'T_Name are not string');
-      });
+    expect(result).to.have.all.keys('C_Name', 'T_Name');
+    assert.isString(result.C_Name, 'C_Name are not string');
+    assert.isString(result.T_Name, 'T_Name are not string');
 
-      /* fail */
+    /* fail */
 
-      api.get('/district')
-      .query({
-        lng: 0,
-        lat: 0,
-      })
-      .expect(404)
-      .expect('Content-Type', /application\/json/)
-      .end(function(err, res) {
-        if (err) return done(err);
+    // case 1
+    const case1 = district(0, 0);
+    
+    expect(case1).to.equal(false);
 
-        const responseData = JSON.parse(res.text);
-        const { status, message, data } = responseData;
+    // case 2
+    const case2 = district(null);
+    
+    expect(case2).to.equal(false);
 
-        expect(status).to.equal(false);
-        expect(message).to.equal('無法取得鄉鎮區資料');
-        expect(data).to.equal(null);
-      });
+    // case 3
+    const case3 = district('test', 'test');
+    
+    expect(case3).to.equal(false);
 
-      done();
   })
 })

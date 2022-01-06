@@ -1,9 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import fs from 'fs';
 import express from 'express';
-import * as d3 from 'd3';
 const app = express();
 app.use(express.static(process.cwd()));
 import cors from 'cors';
@@ -22,6 +20,7 @@ client.on("error", function(error) {
 
 /* libs */
 import { events } from './lib/events.js';
+import { district } from './lib/district.js';
 
 const corsOptions = {
   origin: [
@@ -33,27 +32,19 @@ const corsOptions = {
   ],
 };
 
-/* 經緯度位置對應的鄉鎮區json */
-const TwGeoJsonPath = process.cwd() + '/twGeoJson.json';
-const TwGeoJson = JSON.parse(fs.readFileSync(TwGeoJsonPath, 'utf-8'))
-
 /* 取得經緯度位置對應的鄉鎮區api */
 app.get('/api/district', cors(corsOptions),(request, response) => {
     try {
 
       if (request.query.lng && request.query.lat) {
-        console.log(request.query);
-        const point = [request.query.lng, request.query.lat];
 
-        const geoOut = TwGeoJson.features.filter((d) => {return d3.geoContains(d, point)});
+        const geo = district(request.query.lng, request.query.lat);
 
-        if (geoOut.length === 1) {
-          const [geo] = geoOut;
-          const { C_Name, T_Name } = geo.properties;
+        if (geo) {
           response.json({
             status: true,
             message: '資料取得成功',
-            data: {C_Name, T_Name},
+            data: geo,
           });
         } else {
           response.status(404).send({
