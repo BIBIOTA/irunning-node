@@ -129,7 +129,7 @@ app.get('/api/events', cors(corsOptions),async(request, response) => {
 
 app.get('', (request, response) => {
   response.json({
-    message: 'Hello Woard',
+    message: 'Hello world',
   });
 });
 
