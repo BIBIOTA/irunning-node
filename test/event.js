@@ -36,6 +36,13 @@ describe('#event', () => {
             assert.isString(item.event_name, 'event_name are not string');
           })
         })
+
+        /* 賽事資訊  */
+        describe('#event_info', () => {
+          it('should return string', () => {
+            assert(assert.isString(item.event_info) || assert.isNull(item.event_info), 'event_name are not string or null');
+          })
+        })        
   
         /* 賽事認證(1:IAAF,2:AIMS,3:本賽道經AIMS/IAAF丈量員丈量)  */
         describe('#event_certificate', () => {
