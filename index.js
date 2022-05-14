@@ -8,9 +8,13 @@ import cors from 'cors';
 import * as http from 'http';
 const server = http.createServer(app);
 
+import bodyParser from 'body-parser';
+const jsonParser = bodyParser.json();
+
 /* libs */
 import { events } from './lib/events.js';
 import { district } from './lib/district.js';
+import { sendNewEvent } from './lib/bot/bot.js';
 
 const corsOptions = {
   origin: [
@@ -87,6 +91,24 @@ app.get('/api/events', cors(corsOptions),async(request, response) => {
     response.status(500).send({
       status: false,
       message: '無法取得資料',
+      data: null,
+    });
+  }
+});
+
+app.post('/api/newEvents', jsonParser, (request, response) => {
+  try {
+    sendNewEvent(request.body);
+    response.json({
+      status: true,
+      message: 'ok',
+      data: request.body,
+    });
+  } catch (error) {
+    console.log(error);
+    response.status(500).json({
+      status: false,
+      message: 'Internel Server Error',
       data: null,
     });
   }
