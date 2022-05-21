@@ -1,3 +1,3 @@
 #!/bin/sh
 
-exec node index.js
+exec pm2 start --name irunning-node index.js
