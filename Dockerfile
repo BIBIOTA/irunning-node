@@ -1,8 +1,7 @@
 FROM node:14-alpine as publish
 WORKDIR /app
 RUN apk update \
-    && npm install -g npm \
-    && npm install -g pm2
+    && npm install -g npm
 
 COPY package.json ./
 COPY . .
