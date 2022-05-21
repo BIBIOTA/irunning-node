@@ -18,10 +18,7 @@ import { sendNewEvent } from './lib/bot/bot.js';
 
 const corsOptions = {
   origin: [
-    'http://localhost',
-    'http://localhost:8070',
-    'http://localhost:80',
-    'https://irunning-api.bibiota.com',
+    'https://irunningapi.bibiota.com',
     'https://irunning.bibiota.com',
   ],
 };
