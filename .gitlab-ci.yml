@@ -38,6 +38,10 @@ test:
     paths:
       - node_modules/
     policy: pull
+  before_script:
+    - echo NODE=develop >> .env
+    - echo TELEGRAM_TEST_BOT_TOKEN=$TELEGRAM_TEST_BOT_TOKEN >> .env
+    - echo TELEGRAM_TEST_USERID=$TELEGRAM_TEST_USERID >> .env
   script:
     - npm run test
 
