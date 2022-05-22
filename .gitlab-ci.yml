@@ -47,6 +47,8 @@ Deploy:
   services:
     - docker:18-dind
   before_script:
+    - chmod +x ./setup_env.sh
+    - ./setup_env.sh
     - apk -Uuv add curl bash python
     - curl https://sdk.cloud.google.com | CLOUDSDK_CORE_DISABLE_PROMPTS=1 bash
     - export PATH=$PATH:/root/google-cloud-sdk/bin/
