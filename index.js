@@ -14,7 +14,7 @@ const jsonParser = bodyParser.json();
 /* libs */
 import { events } from './lib/events.js';
 import { district } from './lib/district.js';
-import { sendNewEvent } from './lib/bot/bot.js';
+import { sendNewEvent, sendUpdatedEvent } from './lib/bot/bot.js';
 
 const corsOptions = {
   origin: [
@@ -99,6 +99,24 @@ app.get('/api/events', cors(corsOptions),async(request, response) => {
 app.post('/api/newEvents', jsonParser, (request, response) => {
   try {
     sendNewEvent(request.body);
+    response.json({
+      status: true,
+      message: 'ok',
+      data: request.body,
+    });
+  } catch (error) {
+    console.log(error);
+    response.status(500).json({
+      status: false,
+      message: 'Internel Server Error',
+      data: null,
+    });
+  }
+});
+
+app.post('/api/updatedEvent', jsonParser, (request, response) => {
+  try {
+    sendUpdatedEvent(request.body.data);
     response.json({
       status: true,
       message: 'ok',
