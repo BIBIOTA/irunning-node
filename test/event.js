@@ -125,6 +125,23 @@ describe('#event', () => {
             }
           })
         })
+        describe('#entry_is_end', () => {
+          it('should return boolean', () => {
+            if (item.entry_is_end) {
+              assert.isBoolean(item.entry_is_end, 'participate are not boolean');
+            }
+          })
+        })
+        describe('#entry_start', () => {
+          it('should return date', () => {
+            assert(isDate(item.entry_start), 'entry_start are not date');
+          })
+        })
+        describe('#entry_end', () => {
+          it('should return date', () => {
+            assert(isDate(item.entry_end), 'entry_end are not date');
+          })
+        })
         
       });
       
