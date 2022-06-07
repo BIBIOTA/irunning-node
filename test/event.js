@@ -83,7 +83,12 @@ describe('#event', () => {
                 /* 賽事距離 */
                 describe('#event_distance', () => {
                   it('should return string', () => {
-                    assert.isString(distance.event_distance, 'event_distance are not string');
+                    assert.isString(distance.event_distance, 'event_distance is not string');
+                  })
+                })
+                describe('#distance', () => {
+                  it('should return number', () => {
+                    assert.isNumber(distance.event_distance, 'event_distance is not number');
                   })
                 })
   
@@ -91,7 +96,7 @@ describe('#event', () => {
                 describe('#event_price', () => {
                   it('should return Int or null', () => {
                     if (distance.event_price) {
-                      assert.isNumber(distance.event_price, 'event_distance are not number');
+                      assert.isNumber(distance.event_price, 'event_distance is not number');
                     }
                   })
                 })
@@ -100,7 +105,7 @@ describe('#event', () => {
                 describe('#event_limit', () => {
                   it('should return Int or null', () => {
                     if (distance.event_limit) {
-                      assert.isNumber(distance.event_limit, 'event_limit are not number');
+                      assert.isNumber(distance.event_limit, 'event_limit is not number');
                     }
                   })
                 })
@@ -123,6 +128,23 @@ describe('#event', () => {
             if (item.participate) {
               assert.isString(item.participate, 'participate are not string');
             }
+          })
+        })
+        describe('#entry_is_end', () => {
+          it('should return boolean', () => {
+            if (item.entry_is_end) {
+              assert.isBoolean(item.entry_is_end, 'participate are not boolean');
+            }
+          })
+        })
+        describe('#entry_start', () => {
+          it('should return date', () => {
+            assert(isDate(item.entry_start), 'entry_start are not date');
+          })
+        })
+        describe('#entry_end', () => {
+          it('should return date', () => {
+            assert(isDate(item.entry_end), 'entry_end are not date');
           })
         })
         
