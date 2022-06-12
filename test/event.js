@@ -1,6 +1,6 @@
 /* https://www.npmjs.com/package/chai */
 import chai from 'chai';
-import { events } from '../lib/events.js';
+import { events } from '../lib/event/events.js';
 
 var assert = chai.assert;
 

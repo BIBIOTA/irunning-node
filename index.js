@@ -26,7 +26,7 @@ console.log = function(d) { //
 };
 
 /* libs */
-import { events } from './lib/events.js';
+import { events } from './lib/event/events.js';
 import { district } from './lib/district.js';
 import { sendNewEvent, sendUpdatedEvent } from './lib/bot/bot.js';
 
