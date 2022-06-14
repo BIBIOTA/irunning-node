@@ -11,6 +11,9 @@ const server = http.createServer(app);
 import bodyParser from 'body-parser';
 const jsonParser = bodyParser.json();
 
+import moment from 'moment-timezone';
+moment.tz.setDefault("Asia/Taipei");
+
 /* log */
 import fs from 'fs';
 import util from 'util';
