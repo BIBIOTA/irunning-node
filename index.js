@@ -1,6 +1,11 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+
+import SlackNotify from 'slack-notify';
+const MY_SLACK_WEBHOOK_URL = process.env.MY_SLACK_WEBHOOK_URL;
+const slack = SlackNotify(MY_SLACK_WEBHOOK_URL);
+
 import express from 'express';
 const app = express();
 app.use(express.static(process.cwd()));
@@ -23,9 +28,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
 var log_stdout = process.stdout;
-console.log = function(d) { //
-  log_file.write(util.format(d) + '\n');
-  log_stdout.write(util.format(d) + '\n');
+console.log = function(log) { //
+  log_file.write(util.format(log) + '\n');
+  log_stdout.write(util.format(log) + '\n');
+  slack.send({
+    channel: '#irunning',
+    text: log,
+    unfurl_links: 1,
+    username: 'irunning-node-' + process.env.NODE,
+  });
 };
 
 /* libs */
