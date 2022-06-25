@@ -29,7 +29,7 @@ console.log = function(d) { //
 };
 
 /* libs */
-import { events } from './lib/event/events.js';
+import { getEventsDataFromOrg, processEventsBody } from './lib/event/events.js';
 import { district } from './lib/district.js';
 import { sendNewEvent, sendUpdatedEvent } from './lib/bot/bot.js';
 
@@ -86,22 +86,24 @@ app.get('/api/district', cors(corsOptions),(request, response) => {
 /* 取得賽事資訊api */
 app.get('/api/events', cors(corsOptions),async(request, response) => {
   try {
+    
+    const body = await getEventsDataFromOrg;
 
-    const data = await events;
-
-    if(data && data.length > 0) {
-      response.json({
-        status: true,
-        message: '資料取得成功',
-        data,
-      });
-    } else {
+    if (!body) {
       response.status(404).send({
         status: false,
         message: '查無資料',
         data: null,
       });
     }
+
+    const data = await processEventsBody(body);
+
+    response.json({
+      status: true,
+      message: '資料取得成功',
+      data,
+    });
 
   } catch (err) {
     console.log(err);
